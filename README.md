@@ -1,0 +1,1 @@
+This file is dedicated to all the projects I have devleoped during my time learning python. The purpose of this file is to have all my projects within this file as reference and to visually show how I was able to develope my skills as a programmer.
