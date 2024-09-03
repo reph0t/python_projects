@@ -1,7 +1,7 @@
 def pos_neg(array):
-    pos_list = []
-    neg_list = []
-    non_neg = []
+    pos_list = []    # Postive List
+    neg_list = []    # Negative List
+    non_neg = []    # Nonnegative List
 
     for i in array:
         if i < 0:       # If the value less than 0 it is a negative number
