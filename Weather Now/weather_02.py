@@ -3,8 +3,10 @@ import json
 
 def get_coordinates(city_name):
     loc_api = "5e90daf94d304b8dab802a61636d16fb"    # Opencage API
-    url = "https://api.opencagedata.com/geocode/v1/json"
+    url = "https://api.opencagedata.com/geocode/v1/json"    #Opencage URL
 
+
+    # URL parameters for opencage
     params =  {
         "q" : city_name,
         "limit": "1",
@@ -18,23 +20,22 @@ def get_coordinates(city_name):
         response.raise_for_status()
         location_data = response.json()
 
-        if location_data["results"]:
-            geometry = location_data["results"][0]['geometry']
-            lat, lng = geometry['lat'], geometry['lng']
-            location = ",".join([str(lat), str(lng)])
-            print(f"{city_name} Location: {location}")
+        if location_data["results"]:                # if there is results available
+            geometry = location_data["results"][0]['geometry']      # go to 'results' dictionary and go into geometry
+            lat, lng = geometry['lat'], geometry['lng']             # grab the coordinates
+            location = ",".join([str(lat), str(lng)])               # join two variable into one
+            # print(f"{city_name} Location: {location}")
             return location
 
         else:
-            print(f"No result found for {city_name}")
+            print(f"No result found for {city_name}")       # if the city input does not exist return none
             return None
 
-    except requests.exceptions.RequestException as e:
+    except requests.exceptions.RequestException as e:       # raise an error
         print(f"Error Occurred: {e}")
         return None
 
-
-def units(location):
+def parameters(location):
 
     API_KEY = "w2V255WoWQ9WpLTRVkJpNUp3KDmjskck"  # tomorrow.io API
 
@@ -70,11 +71,9 @@ def units(location):
 
     return params
 
-
 def get_realtime_weather(params):
     # Correct API endpoint for real-time weather from Tomorrow.io
     url = "https://api.tomorrow.io/v4/weather/realtime"
-
 
     try:
 
@@ -118,20 +117,21 @@ def get_realtime_weather(params):
         print(f"Precipitation Probability: {precipitation_probability}%")
 
         # UV Index
-        if uv_index <= 2:
+        if uv_index <= 2:   # if uv index is between 1 and 2 --> LOW
             print(f'UV Index: {uv_index} ("LOW")')
 
-        elif uv_index <= 5:
+        elif uv_index <= 5:     # if uv index is between 3 and 5 --> LOW
             print(f'UV Index: {uv_index} ("MODERATE")')
 
-        elif uv_index <= 7:
+        elif uv_index <= 7:     # if uv index is between 6 and 7 --> LOW
             print(f'UV Index: {uv_index} ("HIGH")')
 
-        elif uv_index <= 10:
+        elif uv_index <= 10:        # if uv index is between 7 and 10 --> LOW
             print(f'UV Index: {uv_index}("VERY HIGH")')
 
-        else:
+        else:   # Anything Higher ---> Extreme 
             print("EXTREME")
+
 
     # Raising Exceptions
     except requests.exceptions.Timeout:     # If the request to the server has Timed out Print this message
@@ -147,18 +147,15 @@ def get_realtime_weather(params):
         print(f"Error fetching Forecast: {e}")
         return None
 
-
-
 def main():
-    city_input = input("Enter City Name: ")
-    coordinates = get_coordinates(city_input)
 
-    if coordinates:
-        params = units(coordinates)
-        get_realtime_weather(params)
+    while True:
+        city_input = input("Enter City Name: ")
+        coordinates = get_coordinates(city_input)
 
-
-
+        if coordinates:
+            params = parameters(coordinates)
+            get_realtime_weather(params)
 
 if __name__ == "__main__":
     main()
